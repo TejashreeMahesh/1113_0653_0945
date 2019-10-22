@@ -1,0 +1,29 @@
+```{r}
+data(iris)
+fit <- lm(Petal.Width ~ Petal.Length, data=iris)
+class(fit)
+```
+
+```{r}
+summary(fit) # show results
+```
+
+```{r}
+df<-data.frame('Petal.Length'=1.4)
+predict(fit,df)
+```
+predict(fit, newdata=data.frame(Petal.Length=seq(1, 2, by=0.1)))
+confint(fit, level=0.95) # CIs for model parameters 
+fitted(fit) # predicted values
+residuals(fit) # residuals
+anova(fit) # anova table 
+influence(fit) # regression diagnostics
+
+
+multiple regression
+```{r}
+fit2 <- lm(Petal.Width ~ Petal.Length + Sepal.Length + Sepal.Width, data=iris)
+summary(fit2) # show results
+df<-data.frame('Petal.Length'=1.4,'Sepal.Length'=5.1,'Sepal.Width'=3.5)
+predict(fit,df)
+```

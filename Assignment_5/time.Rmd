@@ -1,0 +1,36 @@
+```{r}
+data<-read.csv("/Users/rachanabk/Desktop/US_births_2000-2014_SSA.csv")
+head(data)
+tail(data)
+ts<- ts(data$births,frequency =7,start=c(2000,1))
+ts
+plot(ts)
+
+hwm <- HoltWinters(ts,alpha = NULL,beta =NULL,gamma = NULL,
+                   seasonal=c("additive","multiplicative"),
+                   start.periods=2,l.start = NULL,b.start = NULL,
+                   s.start = NULL,
+                   optim.start = c(alpha=0.3,beta=0.1,gamma=0.1),
+                   optim.control = list())
+
+val <- predict(hwm,prediction.interval = TRUE)
+val
+val1 <- predict(hwm,n.ahead=5)
+val1
+plot(hwm,val)
+l_m <- lm(data$births ~  data$year+data$month+data$date_of_month+data$day_of_week+poly(data$day_of_week,6,raw=TRUE), data=ts)
+summary(l_m)
+
+fit <- lm(data$births  ~ . , data = ts)
+
+# Function for Root Mean Squared Error
+RMSE <- function(error) { sqrt(mean(error^2)) }
+RMSE(fit$residuals)
+
+# If you want, say, MAE, you can do the following:
+
+# Function for Mean Absolute Error
+mae <- function(error) { mean(abs(error)) }
+mae(fit$residuals)
+
+```
